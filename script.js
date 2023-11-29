@@ -1,3 +1,4 @@
+
 document.addEventListener("DOMContentLoaded", function () {
     const player = document.getElementById("player");
     console.log(player.style.left, player.style.top);

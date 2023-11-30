@@ -111,199 +111,169 @@
 //   updatePlayerPosition();
 // });
 
-document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener("DOMContentLoaded", function () {
   const player = document.getElementById("player");
   const enemies = [];
   let playerX = 300;
   let playerY = 250;
   let heldDirection = null;
+  let attacking = false; // New variable to track if the player is attacking
   let currentMap = 1;
 
   const maps = {
-      1: {
-          width: 640,
-          height: 360,
-      },
-      2: {
-          width: 800,
-          height: 480,
-      },
-      3: {
-          width: 480,
-          height: 240,
-          barrierY: 80,
-      },
+    1: {
+      width: 640,
+      height: 360,
+    },
+    2: {
+      width: 800,
+      height: 480,
+    },
+    3: {
+      width: 480,
+      height: 240,
+      barrierY: 80,
+    },
   };
 
   const commonBoundaries = {
-      width: 640,
-      height: 360,
+    width: 640,
+    height: 360,
   };
 
-  const attackCooldown = 60; // Cooldown frames for attacks
-  let playerAttackCooldown = 0;
-  let bossAttackCooldown = 0;
-
   function createEnemy(isBoss = false) {
-      const enemy = document.createElement("div");
-      enemy.className = isBoss ? "boss" : "enemy";
-      document.getElementById("game-container").appendChild(enemy);
-      return enemy;
+    const enemy = document.createElement("div");
+    enemy.className = isBoss ? "boss" : "enemy";
+    document.getElementById("game-container").appendChild(enemy);
+    return enemy;
   }
 
   function initializeEnemies(count) {
-      for (let i = 0; i < count - 1; i++) {
-          const enemy = createEnemy();
-          enemies.push({
-              element: enemy,
-              x: Math.random() * (commonBoundaries.width - 40),
-              y: Math.random() * (commonBoundaries.height - 40),
-              directionX: 1,
-              directionY: 1,
-              attackCooldown: 0,
-          });
-      }
-
-      // Create a boss (last enemy)
-      const boss = createEnemy(true);
+    for (let i = 0; i < count - 1; i++) {
+      const enemy = createEnemy();
       enemies.push({
-          element: boss,
-          x: Math.random() * (commonBoundaries.width - 40),
-          y: Math.random() * (commonBoundaries.height - 40),
-          directionX: 1,
-          directionY: 1,
-          attackCooldown: 0,
+        element: enemy,
+        x: Math.random() * (commonBoundaries.width - 40),
+        y: Math.random() * (commonBoundaries.height - 40),
+        directionX: 1,
+        directionY: 1,
       });
+    }
+
+    const boss = createEnemy(true);
+    enemies.push({
+      element: boss,
+      x: Math.random() * (commonBoundaries.width - 40),
+      y: Math.random() * (commonBoundaries.height - 40),
+      directionX: 1,
+      directionY: 1,
+    });
   }
 
   function updateEnemies() {
-      enemies.forEach(enemy => {
-          // Simple enemy movement
-          enemy.x += enemy.directionX;
-          enemy.y += enemy.directionY;
+    enemies.forEach((enemy) => {
+      enemy.x += enemy.directionX;
+      enemy.y += enemy.directionY;
 
-          // Bounce off the walls
-          if (enemy.x < 0 || enemy.x > commonBoundaries.width - 40) {
-              enemy.directionX *= -1;
-          }
-          if (enemy.y < 0 || enemy.y > commonBoundaries.height - 40) {
-              enemy.directionY *= -1;
-          }
+      if (enemy.x < 0 || enemy.x > commonBoundaries.width - 40) {
+        enemy.directionX *= -1;
+      }
+      if (enemy.y < 0 || enemy.y > commonBoundaries.height - 40) {
+        enemy.directionY *= -1;
+      }
 
-          // Update enemy position
-          enemy.element.style.left = enemy.x + "px";
-          enemy.element.style.top = enemy.y + "px";
+      enemy.element.style.left = enemy.x + "px";
+      enemy.element.style.top = enemy.y + "px";
 
-          // Check for collision with the player
-          if (
-              playerX < enemy.x + 40 &&
-              playerX + 40 > enemy.x &&
-              playerY < enemy.y + 40 &&
-              playerY + 40 > enemy.y
-          ) {
-              // Handle collision (you may want to reduce player health or take other actions)
-              console.log("Player collided with an enemy!");
-          }
-
-          // Check for attack cooldown
-          if (enemy.attackCooldown > 0) {
-              enemy.attackCooldown--;
-          } else {
-              // Perform enemy attack (you can customize this based on your game design)
-              performEnemyAttack(enemy);
-              // Reset cooldown
-              enemy.attackCooldown = attackCooldown;
-          }
-      });
-  }
-
-  function performEnemyAttack(enemy) {
-      // Basic attack logic (you can customize this based on your game design)
-      console.log("Enemy attacked!");
-  }
-
-  function performBossAttack(boss) {
-      // Basic boss attack logic (you can customize this based on your game design)
-      console.log("Boss attacked!");
+      if (
+        playerX < enemy.x + 40 &&
+        playerX + 40 > enemy.x &&
+        playerY < enemy.y + 40 &&
+        playerY + 40 > enemy.y
+      ) {
+        console.log("Player collided with an enemy!");
+      }
+    });
   }
 
   function updatePlayerPosition() {
-      player.style.left = playerX + "px";
-      player.style.top = playerY + "px";
+    player.style.left = playerX + "px";
+    player.style.top = playerY + "px";
   }
 
   function handleKeyPress(e) {
-      switch(e.key) {
-          case "ArrowUp":
-          case "ArrowDown":
-          case "ArrowLeft":
-          case "ArrowRight":
-              heldDirection = e.key;
-              break;
-          case "Space": // Space key for player attack
-              if (playerAttackCooldown === 0) {
-                  performPlayerAttack();
-                  playerAttackCooldown = attackCooldown;
-              }
-              break;
-      }
-  }
-
-  function performPlayerAttack() {
-      // Basic player attack logic (you can customize this based on your game design)
-      console.log("Player attacked!");
+    switch (e.key) {
+      case "ArrowUp":
+      case "ArrowDown":
+      case "ArrowLeft":
+      case "ArrowRight":
+        heldDirection = e.key;
+        break;
+      case " ":
+        // Space key for player attack
+        attack();
+        break;
+    }
   }
 
   function handleKeyRelease(e) {
-      if (e.key === heldDirection) {
-          heldDirection = null;
-      }
+    if (e.key === heldDirection) {
+      heldDirection = null;
+    }
+  }
+
+  // Function to handle player attack
+  function attack() {
+    if (!attacking) {
+      // Change player color during the attack
+      player.style.backgroundColor = "#ff0"; // Yellow color (you can adjust this)
+      attacking = true;
+
+      // Reset player color after a short duration (you can adjust the delay)
+      setTimeout(() => {
+        player.style.backgroundColor = "#00f"; // Blue color (original color)
+        attacking = false;
+      }, 500); // 500 milliseconds (adjust as needed)
+    }
   }
 
   function movePlayer() {
-      const speed = 5;
+    const speed = 5;
 
-      switch(heldDirection) {
-          case "ArrowUp":
-              playerY -= speed;
-              break;
-          case "ArrowDown":
-              playerY += speed;
-              break;
-          case "ArrowLeft":
-              playerX -= speed;
-              break;
-          case "ArrowRight":
-              playerX += speed;
-              break;
-      }
+    switch (heldDirection) {
+      case "ArrowUp":
+        playerY -= speed;
+        break;
+      case "ArrowDown":
+        playerY += speed;
+        break;
+      case "ArrowLeft":
+        playerX -= speed;
+        break;
+      case "ArrowRight":
+        playerX += speed;
+        break;
+    }
 
-      // Ensure the player stays within the boundaries of the current map
-      playerX = Math.max(0, Math.min(playerX, maps[currentMap].width - 40));
-      playerY = Math.max(0, Math.min(playerY, maps[currentMap].height - 40));
+    playerX = Math.max(0, Math.min(playerX, maps[currentMap].width - 40));
+    playerY = Math.max(0, Math.min(playerY, maps[currentMap].height - 40));
 
-      // Update player position
-      updatePlayerPosition();
-
-      // Check for attack cooldown
-      if (playerAttackCooldown > 0) {
-          playerAttackCooldown--;
-      }
+    updatePlayerPosition();
   }
 
   function gameLoop() {
-      movePlayer();
-      updateEnemies();
-      requestAnimationFrame(gameLoop);
+    movePlayer();
+    updateEnemies();
+    requestAnimationFrame(gameLoop);
   }
 
   document.addEventListener("keydown", handleKeyPress);
   document.addEventListener("keyup", handleKeyRelease);
 
-  initializeEnemies(3); // 3 enemies on map 1
+  initializeEnemies(3);
 
   function startGame() {
-      gameLoop();
+    gameLoop();
   }
 
   startGame();

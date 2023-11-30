@@ -8,21 +8,20 @@ body {
   width: 640px;
   height: 360px;
   margin: 50px auto;
-  background-color: grey;
-  border: 2px solid black;
+  background-color: gray;
+  border: 2px solid #fff;
 }
 
 #player {
   position: absolute;
   width: 40px;
   height: 40px;
-  background-color: blue;
+  background-color: #00f;
 }
 
-.enemy, .boss {
+.enemy {
   position: absolute;
   width: 40px;
   height: 40px;
   background-color: #f00;
-  border: 2px solid #fff;
 }

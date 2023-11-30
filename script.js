@@ -4,6 +4,8 @@ document.addEventListener("DOMContentLoaded", function() {
   let playerY = 250;
   let heldDirection = null;
   let currentMap = 1;
+  const enemyCount = 3;
+  let enemies = [];
 
   const maps = {
       1: {
@@ -26,6 +28,56 @@ document.addEventListener("DOMContentLoaded", function() {
       height: 360,
   };
 
+  function createEnemy() {
+      const enemy = document.createElement("div");
+      enemy.className = "enemy";
+      document.getElementById("game-container").appendChild(enemy);
+
+      // Initialize enemy position randomly within the map
+      const maxX = maps[currentMap].width - 40;
+      const maxY = maps[currentMap].height - 40;
+      enemy.style.left = Math.floor(Math.random() * maxX) + "px";
+      enemy.style.top = Math.floor(Math.random() * maxY) + "px";
+
+      enemies.push(enemy);
+  }
+
+  function updateEnemies() {
+      enemies.forEach((enemy) => {
+          // Simulate movement towards the player
+          const enemyX = parseInt(enemy.style.left);
+          const enemyY = parseInt(enemy.style.top);
+          const playerDistance = Math.hypot(playerX - enemyX, playerY - enemyY);
+
+          if (playerDistance < 50) {
+              // If the enemy is close to the player, simulate an attack
+              attackEnemy(enemy);
+          } else {
+              // Otherwise, move the enemy towards the player
+              const angle = Math.atan2(playerY - enemyY, playerX - enemyX);
+              const speed = 2;
+              const deltaX = speed * Math.cos(angle);
+              const deltaY = speed * Math.sin(angle);
+
+              // Ensure enemies stay within the boundaries of the current map
+              const newX = Math.max(0, Math.min(enemyX + deltaX, maps[currentMap].width - 40));
+              const newY = Math.max(0, Math.min(enemyY + deltaY, maps[currentMap].height - 40));
+
+              enemy.style.left = newX + "px";
+              enemy.style.top = newY + "px";
+          }
+      });
+  }
+
+  function attackEnemy(enemy) {
+      // For simplicity, let's change the color of the enemy to indicate an attack
+      enemy.style.backgroundColor = "#f00"; // Change color to red
+      setTimeout(() => {
+          // Reset color after a short delay
+          enemy.style.backgroundColor = "#ff0"; // Change color back to yellow
+      }, 200); // Adjust the delay (in milliseconds) as needed
+  }
+
   function updatePlayerPosition() {
       player.style.left = playerX + "px";
       player.style.top = playerY + "px";
@@ -40,7 +92,6 @@ document.addEventListener("DOMContentLoaded", function() {
               heldDirection = e.key;
               break;
           case " ":
-              // Space key for player attack
               attack();
               break;
       }
@@ -53,12 +104,10 @@ document.addEventListener("DOMContentLoaded", function() {
   }
 
   function attack() {
-      // For simplicity, let's change the color of the player to indicate an attack
-      player.style.backgroundColor = "#f00"; // Change color to red
+      player.style.backgroundColor = "#f00";
       setTimeout(() => {
-          // Reset color after a short delay
-          player.style.backgroundColor = "#00f"; // Change color back to blue
-      }, 200); // Adjust the delay (in milliseconds) as needed
+          player.style.backgroundColor = "#00f";
+      }, 200);
   }
 
   function movePlayer() {
@@ -106,12 +155,18 @@ document.addEventListener("DOMContentLoaded", function() {
       updatePlayerPosition();
   }
 
+  function gameLoop() {
+      movePlayer();
+      updateEnemies();
+      requestAnimationFrame(gameLoop);
+  }
+
   document.addEventListener("keydown", handleKeyPress);
   document.addEventListener("keyup", handleKeyRelease);
 
-  function gameLoop() {
-      movePlayer();
-      requestAnimationFrame(gameLoop);
+  // Create enemies at the start
+  for (let i = 0; i < enemyCount; i++) {
+      createEnemy();
   }
 
   gameLoop();

@@ -1,22 +1,20 @@
 body {
-    margin: 0;
-    overflow: hidden;
-  }
-  
-  #game {
-    width: 800px;
-    height: 600px;
-    margin: 50px auto;
-    position: relative;
-    background-color: #87ceeb; /* Sky Blue */
-  }
+  margin: 0;
+  overflow: hidden;
+}
 
-  #player {
-    width: 50px;
-    height: 50px;
-    background-color: #8b4513; /* Saddle Brown */
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-  }
+#game-container {
+  position: relative;
+  width: 640px;
+  height: 360px;
+  margin: 50px auto;
+  background-color: grey;
+  border: 2px solid black;
+}
+
+#player {
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  background-color: blue;
+}

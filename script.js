@@ -31,7 +31,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     switch (heldDirection) {
       case "ArrowUp":
-        playerY -= Speed;
+        playerY -= speed;
         break;
       case "ArrowDown":
         playerY += speed;

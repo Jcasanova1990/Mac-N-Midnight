@@ -76,6 +76,8 @@ document.addEventListener("DOMContentLoaded", function() {
           // Reset color after a short delay
           enemy.style.backgroundColor = "#ff0"; // Change color back to yellow
       }, 200); // Adjust the delay (in milliseconds) as needed
+
+      console.log("Enemy attacked player!");
   }
 
   function updatePlayerPosition() {
@@ -108,6 +110,8 @@ document.addEventListener("DOMContentLoaded", function() {
       setTimeout(() => {
           player.style.backgroundColor = "#00f";
       }, 200);
+
+      console.log("Player attacked enemies!");
   }
 
   function movePlayer() {

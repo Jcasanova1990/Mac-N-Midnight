@@ -25,3 +25,10 @@ body {
   height: 40px;
   background-color: #f00;
 }
+
+.boss {
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  background-color: purple;
+}

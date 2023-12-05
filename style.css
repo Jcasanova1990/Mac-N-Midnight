@@ -50,3 +50,29 @@ body {
   height: 40px;
   background-color: purple;
 }
+#victory-message {
+  display: none;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #4caf50; /* Green background color */
+  color: white;
+  padding: 20px;
+  text-align: center;
+  font-size: 18px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+#victory-message::after {
+  display: block;
+  font-size: 40px;
+  margin-top: 10px;
+  color: #fff;
+}
+
+/* Additional styles for hiding the victory message after a delay */
+#victory-message.hidden {
+  display: none;
+}

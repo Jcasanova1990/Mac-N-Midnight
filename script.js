@@ -4,8 +4,8 @@ document.addEventListener("DOMContentLoaded", function () {
     const playerNameElement = document.getElementById("player-name");
     const playerHpElement = document.getElementById("player-hp");
     const player = document.getElementById("player");
-
     playerNameElement.textContent = playerName;
+
 
     let playerX = 300;
     let playerY = 250;
@@ -47,6 +47,15 @@ document.addEventListener("DOMContentLoaded", function () {
             boss.classList.add("doodle", "boss");
             boss.style.backgroundColor = "#800080";
             document.getElementById("game-container").appendChild(boss);
+
+            const bossNameElement = document.createElement("div");
+            bossNameElement.classList.add("boss-name");
+            bossNameElement.textContent = "Mega Doodle";
+            boss.appendChild(bossNameElement);
+
+            const bossHpElement = document.createElement("div");
+            bossHpElement.classList.add("boss-hp");
+            boss.appendChild(bossHpElement);
 
             const maxX = maps[currentMap].width - 40;
             const maxY = maps[currentMap].height - 40;
@@ -106,6 +115,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
                 boss.style.left = newX + "px";
                 boss.style.top = newY + "px";
+                
+                // updates boss hp on UI
+                const bossHpElement = boss.querySelector(".boss-hp");
+                bossHpElement.textContent = `HP: ${maxBossHits - boss.hits}`;
 
                 // Reset the hit status for the next collision check
                 boss.isHit = false;
@@ -119,6 +132,16 @@ document.addEventListener("DOMContentLoaded", function () {
         enemy.hits = 0; // Track the number of hits
         enemy.isHit = false; // Flag to track if the enemy is hit
         document.getElementById("game-container").appendChild(enemy);
+
+        const enemyNameElement = document.createElement("div");
+        enemyNameElement.classList.add("enemy-name");
+        enemyNameElement.textContent = "Doodle";
+        enemy.appendChild(enemyNameElement);
+
+    
+        const enemyHpElement = document.createElement("div");
+        enemyHpElement.classList.add("enemy-hp");
+        enemy.appendChild(enemyHpElement);
 
         const maxX = maps[currentMap].width - 40;
         const maxY = maps[currentMap].height - 40;
@@ -149,6 +172,10 @@ document.addEventListener("DOMContentLoaded", function () {
                 enemy.style.left = newX + "px";
                 enemy.style.top = newY + "px";
 
+                // updates enemy hp and UI
+                const enemyHpElement = enemy.querySelector(".enemy-hp");
+                enemyHpElement.textContent = `HP: ${maxEnemyHits - enemy.hits}`;
+
                 // Reset the hit status for the next collision check
                 enemy.isHit = false;
             }
@@ -156,20 +183,20 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     function handleCollision(enemy) {
-        if (!enemy.isHit) {
-            // Only decrease player health if the enemy successfully collides
+        if (!enemy.isHit && !isPlayerBlocking) {
+            // Only decrease player health if the enemy successfully collides and player is not blocking
             playerHealth--;
-
+    
             // Check if player has run out of health
             if (playerHealth <= 0) {
-                // Game over logic (e.g., display a message, reset the game, etc.)
+                // Game over 
                 console.log("Game over!");
                 resetGame(); // Create a function to reset the game state
             }
-
+    
             // Mark the enemy as hit to prevent continuous damage
             enemy.isHit = true;
-
+    
             // Log the type of attack based on the enemy class
             if (enemy.classList.contains("boss")) {
                 console.log("Boss attacked!");
@@ -178,6 +205,7 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         }
     }
+    
 
     function displayVictoryMessage() {
         const victoryMessageElement = document.getElementById("victory-message");
@@ -230,7 +258,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         enemy.style.backgroundColor = "#ff0";
                     }, 1500);
     
-                    console.log("enemy Attacked!");
+                    console.log("Hit Landed!");
     
                     enemy.hits = (enemy.hits || 0) + 1;
                     enemy.isHit = true; // Mark the enemy as hit
@@ -260,15 +288,27 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
     
+    let isPlayerBlocking = false;
 
     function block() {
-        player.style.backgroundColor = "#0f0";
-        setTimeout(() => {
-            player.style.backgroundColor = "#00f";
-        }, 300);
-
-        console.log("Player blocked!");
+        if (!isPlayerBlocking) {
+            isPlayerBlocking = true;
+    
+            player.style.backgroundColor = "#0f0";
+            setTimeout(() => {
+                player.style.backgroundColor = "#00f";
+                isPlayerBlocking = false; // Reset the block status
+            }, 1200);
+    
+            console.log("Player blocked!");
+    
+            // The block lasts for 1200ms (1.2 seconds)
+            setTimeout(() => {
+                isPlayerBlocking = false;
+            }, 1200);
+        }
     }
+    
 
     function updatePlayerPosition() {
         player.style.left = playerX + "px";

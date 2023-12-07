@@ -21,24 +21,28 @@ document.addEventListener("DOMContentLoaded", function () {
 
     const maps = {
         1: {
-            width: 640,
-            height: 360,
+            width: 1280,
+            height: 720,
+            barrierY: 1,
+            barrierX: 1,
         },
         2: {
-            width: 640,
-            height: 360,
+            width: 1280,
+            height: 720,
+            barrierY: 1,
+            barrierX: 1,
         },
         3: {
-            width: 640,
-            height: 360,
+            width: 1280,
+            height: 720,
             barrierY: 1,
             barrierX: 1,
         },
     };
 
     const commonBoundaries = {
-        width: 640,
-        height: 360,
+        width: 960,
+        height: 700,
     };
 
     function createBoss() {
@@ -85,9 +89,6 @@ document.addEventListener("DOMContentLoaded", function () {
                     if (index !== -1) {
                         bosses.splice(index, 1);
                         console.log("Defeated boss:", boss);
-
-                        // Additional actions upon defeating the boss
-                        // Trigger some event, display a message, etc.
                         displayVictoryMessage();
                     }
                 }
@@ -235,6 +236,7 @@ document.addEventListener("DOMContentLoaded", function () {
     function attack() {
         const currentTime = Date.now();
         if (currentTime - lastAttackTime >= attackCooldown) {
+            setPlayerSprite(heldDirection, true);
             player.style.backgroundColor = "#f00";
             setTimeout(() => {
                 player.style.backgroundColor = "#00f";
@@ -245,7 +247,13 @@ document.addEventListener("DOMContentLoaded", function () {
     
             lastAttackTime = currentTime;
             isPlayerAttacking = true; // Set the attack status
-    
+
+            setTimeout(() => {
+                // Reset the sprite after the attack animation
+                setPlayerSprite(heldDirection, false);
+                isPlayerAttacking = false; // Reset the attack status
+            }, 200);
+
             // Iterate through enemies and bosses and handle a single attack
             [...enemies, ...bosses].forEach((enemy) => {
                 const playerDistance = Math.hypot(playerX - parseInt(enemy.style.left) + 20, playerY - parseInt(enemy.style.top) + 20);
@@ -283,20 +291,24 @@ document.addEventListener("DOMContentLoaded", function () {
                             enemy.remove();
                         }
                     }
-                }
+                }setPlayerSprite("neutral", false);
             });
         }
     }
     
     let isPlayerBlocking = false;
 
+    const blockSpriteUrl = "/media/oni/300gb0/school_work/software_classwork/unit1/Mac-N-Midnight/Mac-N-Midnight/player_sprites/blk.png";
+
     function block() {
         if (!isPlayerBlocking) {
             isPlayerBlocking = true;
     
-            player.style.backgroundColor = "#0f0";
+            player.style.backgroundImage = `url(${blockSpriteUrl})`;
+    
             setTimeout(() => {
-                player.style.backgroundColor = "#00f";
+                // Reset the player sprite after blocking
+                setPlayerSprite(heldDirection, false);
                 isPlayerBlocking = false; // Reset the block status
             }, 1200);
     
@@ -337,23 +349,34 @@ document.addEventListener("DOMContentLoaded", function () {
             heldDirection = null;
         }
     }
-    function setPlayerSprite(direction) {
+
+    function setPlayerSprite(direction, isAttacking) {  
+        let spriteName = isAttacking ? `attack_${direction}_sprite.png` : `${direction}_sprite.png`;
+    
+        // Clear all existing direction classes
+        player.classList.remove("up", "down", "left", "right", "neutral", "attack_up", "attack_down", "attack_left", "attack_right");
+    
+        if (isAttacking) {
+            player.classList.add(`attack_${direction}`);
+        } else {
+            player.classList.add(direction);
+        }
+    
         switch (direction) {
             case "up":
-                player.style.backgroundImage = "url('up_sprite.png')";
+                player.style.backgroundImage = `url('player_sprites/up_sprite.png')`;
                 break;
             case "down":
-                player.style.backgroundImage = "url('down_sprite.png')";
+                player.style.backgroundImage = `url('down_sprite.png')`;
                 break;
             case "left":
-                player.style.backgroundImage = "url('left_sprite.png')";
+                player.style.backgroundImage = `url('left_sprite.png')`;
                 break;
             case "right":
-                player.style.backgroundImage = "url('right_sprite.png')";
+                player.style.backgroundImage = `url('right_sprite.png')`;
                 break;
             default:
-                player.style.backgroundImage = "url('neutral_sprite.png')";
-           
+                player.style.backgroundImage = `url('neutral_sprite.png')`;
         }
     }
 

@@ -5,23 +5,25 @@ body {
 
 #game-container {
   position: relative;
-  width: 640px;
-  height: 360px;
+  width: 1280px;
+  height: 720px;
   margin: 50px auto;
   background-color: gray;
+  background-image: url("map.png");
+  background-size: cover;
   border: 2px solid #fff;
 }
 
 #player {
   position: absolute;
-  width: 40px;
-  height: 40px;
+  width: 60px;
+  height: 60px;
   background-color: #00f;
 }
 
 #player-sprite {
-  width: 40px; 
-  height: 40px;
+  width: 60px; 
+  height: 60px;
   transition: transform 0.2s ease; 
 }
 
@@ -62,15 +64,15 @@ body {
 
 .enemy {
   position: absolute;
-  width: 40px;
-  height: 40px;
+  width: 80px;
+  height: 80px;
   background-color: #f00;
 }
 
 .boss {
   position: absolute;
-  width: 40px;
-  height: 40px;
+  width: 120px;
+  height: 120px;
   background-color: purple;
 }
 

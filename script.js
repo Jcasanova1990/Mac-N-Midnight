@@ -367,16 +367,16 @@ document.addEventListener("DOMContentLoaded", function () {
                 player.style.backgroundImage = `url('player_sprites/up_sprite.png')`;
                 break;
             case "down":
-                player.style.backgroundImage = `url('down_sprite.png')`;
+                player.style.backgroundImage = `url('player_sprites/down_sprite.png')`;
                 break;
             case "left":
-                player.style.backgroundImage = `url('left_sprite.png')`;
+                player.style.backgroundImage = `url('player_sprites/left_sprite.png')`;
                 break;
             case "right":
-                player.style.backgroundImage = `url('right_sprite.png')`;
+                player.style.backgroundImage = `url('player_sprites/right_sprite.png')`;
                 break;
             default:
-                player.style.backgroundImage = `url('neutral_sprite.png')`;
+                player.style.backgroundImage = `url('player_sprites/neutral_sprite.png')`;
         }
     }
 

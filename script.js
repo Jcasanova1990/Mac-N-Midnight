@@ -337,6 +337,25 @@ document.addEventListener("DOMContentLoaded", function () {
             heldDirection = null;
         }
     }
+    function setPlayerSprite(direction) {
+        switch (direction) {
+            case "up":
+                player.style.backgroundImage = "url('up_sprite.png')";
+                break;
+            case "down":
+                player.style.backgroundImage = "url('down_sprite.png')";
+                break;
+            case "left":
+                player.style.backgroundImage = "url('left_sprite.png')";
+                break;
+            case "right":
+                player.style.backgroundImage = "url('right_sprite.png')";
+                break;
+            default:
+                player.style.backgroundImage = "url('neutral_sprite.png')";
+           
+        }
+    }
 
     function movePlayer() {
         const speed = 5;
@@ -381,11 +400,23 @@ document.addEventListener("DOMContentLoaded", function () {
                     playerX = commonBoundaries.width - 40;
                 }
                 break;
+                
         }
 
         updatePlayerPosition();
     }
-
+    function updatePlayerPosition() {
+        player.style.left = playerX + "px";
+        player.style.top = playerY + "px";
+      
+        // Remove all direction classes
+        player.classList.remove("up", "down", "left", "right");
+      
+        // Add the appropriate direction class based on the movement
+        if (heldDirection) {
+          player.classList.add(heldDirection);
+        }
+      }
     function gameLoop() {
         movePlayer();
         updateEnemies();

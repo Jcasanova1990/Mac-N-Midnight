@@ -18,6 +18,28 @@ body {
   height: 40px;
   background-color: #00f;
 }
+
+#player-sprite {
+  width: 40px; 
+  height: 40px;
+  transition: transform 0.2s ease; 
+}
+
+#player.up #player-sprite {
+  transform: rotate(0deg);
+}
+
+#player.down #player-sprite {
+  transform: rotate(180deg);
+}
+
+#player.left #player-sprite {
+  transform: rotate(-90deg);
+}
+
+#player.right #player-sprite {
+  transform: rotate(90deg);
+}
 #player-info {
   position: absolute;
   top: 10px;
@@ -36,6 +58,7 @@ body {
 #player-hp {
   color: #ff0000; 
 }
+
 
 .enemy {
   position: absolute;

@@ -233,46 +233,92 @@ document.addEventListener("DOMContentLoaded", function () {
         return playerDistance < 50;
     }
 
+    function setPlayerSprite(direction, isAttacking) {  
+        let spriteName = isAttacking ? `attack_${direction}_sprite.png` : `${direction}_sprite.png`;
+    
+        // Clear all existing direction classes
+        player.classList.remove("up", "down", "left", "right", "neutral", "attack_up", "attack_down", "attack_left", "attack_right");
+    
+        if (isAttacking) {
+            player.classList.add(`attack_${direction}`);
+        } else {
+            player.classList.add(direction);
+        }
+    
+        switch (direction) {
+            case "up":
+                player.style.backgroundImage = `/media/oni/300gb0/school_work/software_classwork/unit1/Mac-N-Midnight/Mac-N-Midnight/player_sprites/move_up_sprite.png')`;
+                break;
+            case "down":
+                player.style.backgroundImage = `url('/media/oni/300gb0/school_work/software_classwork/unit1/Mac-N-Midnight/Mac-N-Midnight/player_sprites/move_down_sprite.png')`;
+                break;
+            case "left":
+                player.style.backgroundImage = `/media/oni/300gb0/school_work/software_classwork/unit1/Mac-N-Midnight/Mac-N-Midnight/player_sprites/move_left_sprite.png')`;
+                break;
+            case "right":
+                player.style.backgroundImage = `/media/oni/300gb0/school_work/software_classwork/unit1/Mac-N-Midnight/Mac-N-Midnight/player_sprites/move_right_sprite.png')`;
+                break;
+            default:
+                player.style.backgroundImage = `url('/media/oni/300gb0/school_work/software_classwork/unit1/Mac-N-Midnight/Mac-N-Midnight/player_sprites/move_neutral_sprite.png')`;
+        }
+    }
+
+
+
     function attack() {
         const currentTime = Date.now();
+    
         if (currentTime - lastAttackTime >= attackCooldown) {
-            setPlayerSprite(heldDirection, true);
-            player.style.backgroundColor = "#f00";
-            setTimeout(() => {
-                player.style.backgroundColor = "#00f";
-                isPlayerAttacking = false; // Reset the attack status
-            }, 200);
     
             console.log("Player attacked enemies!");
     
             lastAttackTime = currentTime;
-            isPlayerAttacking = true; // Set the attack status
-
+    
+            isPlayerAttacking = true;
+    
+            // Get the center coordinates of the player
+            const playerCenterX = playerX + player.offsetWidth / 2;
+            const playerCenterY = playerY + player.offsetHeight / 2;
+    
+            // Increase the player's size during the attack
+            player.style.width = '120px';
+            player.style.height = '120px';
+    
+            // Change the player's background image during the attack
+            player.style.backgroundImage = 'url("/media/oni/300gb0/school_work/software_classwork/unit1/Mac-N-Midnight/Mac-N-Midnight/player_sprites/player_neutral_atk.png")';
+    
+            // Add the attack animation class to the player element
+            player.classList.add("attack-animation");
+    
+            // Reset the size, reset the background image, remove the animation class, and remove the attack animation class after a delay
             setTimeout(() => {
-                // Reset the sprite after the attack animation
-                setPlayerSprite(heldDirection, false);
-                isPlayerAttacking = false; // Reset the attack status
+                isPlayerAttacking = false;
+                player.style.width = '60px';
+                player.style.height = '60px';
+                player.style.backgroundImage = 'url("/media/oni/300gb0/school_work/software_classwork/unit1/Mac-N-Midnight/Mac-N-Midnight/player_sprites/move_neutral_sprite.png")';
+                player.classList.remove("attack-animation");
             }, 200);
-
+    
             // Iterate through enemies and bosses and handle a single attack
             [...enemies, ...bosses].forEach((enemy) => {
-                const playerDistance = Math.hypot(playerX - parseInt(enemy.style.left) + 20, playerY - parseInt(enemy.style.top) + 20);
+                // Get the center coordinates of the enemy
+                const enemyCenterX = parseInt(enemy.style.left) + enemy.offsetWidth / 2;
+                const enemyCenterY = parseInt(enemy.style.top) + enemy.offsetHeight / 2;
+    
+                // Calculate the distance between the player's and enemy's centers
+                const playerDistance = Math.hypot(playerCenterX - enemyCenterX, playerCenterY - enemyCenterY);
                 console.log(`Player distance to enemy: ${playerDistance}`);
     
-                // Adjust the condition to check if the playerDistance is within the desired range
                 if (playerDistance < 120) { // Changes the value to the desired attack range
-                    enemy.style.backgroundColor = "#f00";
-                    setTimeout(() => {
-                        enemy.style.backgroundColor = "#ff0";
-                    }, 1500);
     
                     console.log("Hit Landed!");
     
+                    // Update the enemy's hit information
                     enemy.hits = (enemy.hits || 0) + 1;
-                    enemy.isHit = true; // Mark the enemy as hit
     
                     const maxHits = enemy.classList.contains("boss") ? maxBossHits : maxEnemyHits;
     
+                    // Check if the enemy is defeated
                     if (enemy.hits >= maxHits) {
                         const index = enemy.classList.contains("boss") ? bosses.indexOf(enemy) : enemies.indexOf(enemy);
                         if (index !== -1) {
@@ -288,13 +334,18 @@ document.addEventListener("DOMContentLoaded", function () {
                                 console.log("Defeated enemy:", enemy);
                             }
     
+                            // Remove the enemy from the DOM
                             enemy.remove();
                         }
                     }
-                }setPlayerSprite("neutral", false);
+                }
             });
         }
     }
+    
+    
+
+    
     
     let isPlayerBlocking = false;
 
@@ -347,36 +398,6 @@ document.addEventListener("DOMContentLoaded", function () {
     function handleKeyRelease(e) {
         if (e.key === heldDirection) {
             heldDirection = null;
-        }
-    }
-
-    function setPlayerSprite(direction, isAttacking) {  
-        let spriteName = isAttacking ? `attack_${direction}_sprite.png` : `${direction}_sprite.png`;
-    
-        // Clear all existing direction classes
-        player.classList.remove("up", "down", "left", "right", "neutral", "attack_up", "attack_down", "attack_left", "attack_right");
-    
-        if (isAttacking) {
-            player.classList.add(`attack_${direction}`);
-        } else {
-            player.classList.add(direction);
-        }
-    
-        switch (direction) {
-            case "up":
-                player.style.backgroundImage = `url('player_sprites/up_sprite.png')`;
-                break;
-            case "down":
-                player.style.backgroundImage = `url('player_sprites/down_sprite.png')`;
-                break;
-            case "left":
-                player.style.backgroundImage = `url('player_sprites/left_sprite.png')`;
-                break;
-            case "right":
-                player.style.backgroundImage = `url('player_sprites/right_sprite.png')`;
-                break;
-            default:
-                player.style.backgroundImage = `url('player_sprites/neutral_sprite.png')`;
         }
     }
 

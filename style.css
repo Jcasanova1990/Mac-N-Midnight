@@ -19,29 +19,16 @@ body {
   width: 60px;
   height: 60px;
   background-color: #00f;
+  background-image: url("/media/oni/300gb0/school_work/software_classwork/unit1/Mac-N-Midnight/Mac-N-Midnight/player_sprites/move_neutral_sprite.png");
 }
 
 #player-sprite {
   width: 60px; 
   height: 60px;
-  transition: transform 0.2s ease; 
+  transition: transform 0.2s ease;
+  
 }
 
-#player.up #player-sprite {
-  transform: rotate(0deg);
-}
-
-#player.down #player-sprite {
-  transform: rotate(180deg);
-}
-
-#player.left #player-sprite {
-  transform: rotate(-90deg);
-}
-
-#player.right #player-sprite {
-  transform: rotate(90deg);
-}
 #player-info {
   position: absolute;
   top: 10px;
@@ -67,6 +54,7 @@ body {
   width: 80px;
   height: 80px;
   background-color: #f00;
+  background-image: url("/media/oni/300gb0/school_work/software_classwork/unit1/Mac-N-Midnight/Mac-N-Midnight/enemy_sprites/doodle.png");
 }
 
 .boss {
@@ -74,6 +62,7 @@ body {
   width: 120px;
   height: 120px;
   background-color: purple;
+  background-image: url("/media/oni/300gb0/school_work/software_classwork/unit1/Mac-N-Midnight/Mac-N-Midnight/boss_sprites/megadoodle.png");
 }
 
 .enemy-name,

@@ -191,8 +191,8 @@ document.addEventListener("DOMContentLoaded", function () {
             // Check if player has run out of health
             if (playerHealth <= 0) {
                 // Game over 
-                console.log("Game over!");
-                resetGame(); // Create a function to reset the game state
+                console.log("Game Over!");
+                resetGame(); 
             }
     
             // Mark the enemy as hit to prevent continuous damage
@@ -247,19 +247,19 @@ document.addEventListener("DOMContentLoaded", function () {
     
         switch (direction) {
             case "up":
-                player.style.backgroundImage = `/media/oni/300gb0/school_work/software_classwork/unit1/Mac-N-Midnight/Mac-N-Midnight/player_sprites/move_up_sprite.png')`;
+                player.style.backgroundImage = ``;
                 break;
             case "down":
-                player.style.backgroundImage = `url('/media/oni/300gb0/school_work/software_classwork/unit1/Mac-N-Midnight/Mac-N-Midnight/player_sprites/move_down_sprite.png')`;
+                player.style.backgroundImage = ``;
                 break;
             case "left":
-                player.style.backgroundImage = `/media/oni/300gb0/school_work/software_classwork/unit1/Mac-N-Midnight/Mac-N-Midnight/player_sprites/move_left_sprite.png')`;
+                player.style.backgroundImage = ``;
                 break;
             case "right":
-                player.style.backgroundImage = `/media/oni/300gb0/school_work/software_classwork/unit1/Mac-N-Midnight/Mac-N-Midnight/player_sprites/move_right_sprite.png')`;
+                player.style.backgroundImage = ``;
                 break;
             default:
-                player.style.backgroundImage = `url('/media/oni/300gb0/school_work/software_classwork/unit1/Mac-N-Midnight/Mac-N-Midnight/player_sprites/move_neutral_sprite.png')`;
+                player.style.backgroundImage = ``;
         }
     }
 
@@ -310,12 +310,10 @@ document.addEventListener("DOMContentLoaded", function () {
                 console.log(`Player distance to enemy: ${playerDistance}`);
     
                 if (playerDistance < 120) { // Changes the value to the desired attack range
-    
                     console.log("Hit Landed!");
     
                     // Update the enemy's hit information
                     enemy.hits = (enemy.hits || 0) + 1;
-    
                     const maxHits = enemy.classList.contains("boss") ? maxBossHits : maxEnemyHits;
     
                     // Check if the enemy is defeated
@@ -325,9 +323,7 @@ document.addEventListener("DOMContentLoaded", function () {
                             if (enemy.classList.contains("boss")) {
                                 bosses.splice(index, 1);
                                 console.log("Defeated boss:", enemy);
-    
-                                // Additional actions upon defeating the boss
-                                // Trigger some event, display a message, etc.
+
                                 displayVictoryMessage();
                             } else {
                                 enemies.splice(index, 1);
@@ -342,10 +338,6 @@ document.addEventListener("DOMContentLoaded", function () {
             });
         }
     }
-    
-    
-
-    
     
     let isPlayerBlocking = false;
 
@@ -489,6 +481,48 @@ document.addEventListener("DOMContentLoaded", function () {
                 createBoss();
         }
     }
+
+    function startGame() {
+        // Redirect to titlescreen.html
+        window.location.href = 'titlescreen.html';
+    }
+function resetGame() {
+    // Reset all game-related variables, player position, health, etc.
+    playerX = 300;
+    playerY = 250;
+    playerHealth = 15;
+    heldDirection = null;
+    currentMap = 1;
+
+    // Remove all enemies and bosses
+    clearEnemy();
+
+    // Regenerate enemies based on the current map
+    makeMapEnemies(currentMap);
+
+    // Show a modal with only the "Return to Title Screen" button
+    const modal = document.createElement("div");
+    modal.classList.add("modal");
+    
+    const modalContent = document.createElement("div");
+    modalContent.classList.add("modal-content");
+
+    const message = document.createElement("p");
+    message.textContent = "Game over!";
+
+    const returnToTitleButton = document.createElement("button");
+    returnToTitleButton.textContent = "Return to Title Screen";
+    returnToTitleButton.addEventListener("click", () => {
+        modal.remove();
+        startGame(); // Go back to the title screen
+    });
+
+    modalContent.appendChild(message);
+    modalContent.appendChild(returnToTitleButton);
+    modal.appendChild(modalContent);
+
+    document.body.appendChild(modal);
+}
 
     function clearEnemy() {
         const enemiesToRemove = document.querySelectorAll(".doodle.enemy", ".doodle.boss");

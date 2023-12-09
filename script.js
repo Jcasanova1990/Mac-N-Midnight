@@ -6,6 +6,55 @@ document.addEventListener("DOMContentLoaded", function () {
     const player = document.getElementById("player");
     playerNameElement.textContent = playerName;
 
+    // 
+    const backgroundMusic = new Audio("/media/oni/300gb0/school_work/software_classwork/unit1/Mac-N-Midnight/Mac-N-Midnight/music/background_music.mp3");  // Replace with the correct path
+    const volumeControl = document.getElementById("volumeControl");
+    const attackSound = document.getElementById("attackSound");
+    const blockSound = document.getElementById("blockSound");
+    const collisionSound = document.getElementById("collisionSound");
+
+    backgroundMusic.volume = volumeControl.value;
+
+    // Event listener for volume control
+    volumeControl.addEventListener("input", function () {
+        backgroundMusic.volume = this.value;
+    });
+
+    // Play background music (in response to user interaction)
+    document.addEventListener("click", function () {
+        playBackgroundMusic();
+    }, { once: true });
+
+    // Function to play background music
+    function playBackgroundMusic() {
+        backgroundMusic.loop = true; // Set the music to loop
+        backgroundMusic.play().catch(error => {
+            console.error("Background music play error:", error);
+        });
+    }
+
+    const playPauseButton = document.getElementById("playPauseButton");
+
+    playPauseButton.addEventListener("click", togglePlayPause);
+
+    function togglePlayPause() {
+        if (backgroundMusic.paused) {
+            playBackgroundMusic();
+        } else {
+            pauseBackgroundMusic();
+        }
+    }
+
+    function playBackgroundMusic() {
+        backgroundMusic.play();
+        playPauseButton.textContent = "Pause";
+    }
+
+    function pauseBackgroundMusic() {
+        backgroundMusic.pause();
+        playPauseButton.textContent = "Play";
+    }
+
 
     let playerX = 300;
     let playerY = 250;
@@ -100,32 +149,57 @@ document.addEventListener("DOMContentLoaded", function () {
         bosses.forEach((boss) => {
             const bossX = parseInt(boss.style.left);
             const bossY = parseInt(boss.style.top);
-
+    
             // Check for collision with the player
             if (isPlayerCloseToEnemy(boss)) {
-                handleCollision(boss);
+                handleCollisionWithBoss(boss);
             } else {
                 // Move towards the player
                 const angle = Math.atan2(playerY - bossY, playerX - bossX);
-                const speed = 2;
+                const speed = 3;
                 const deltaX = speed * Math.cos(angle);
                 const deltaY = speed * Math.sin(angle);
-
+    
                 const newX = Math.max(0, Math.min(bossX + deltaX, maps[currentMap].width - 40));
                 const newY = Math.max(0, Math.min(bossY + deltaY, maps[currentMap].height - 40));
-
+    
                 boss.style.left = newX + "px";
                 boss.style.top = newY + "px";
-                
+    
                 // updates boss hp on UI
                 const bossHpElement = boss.querySelector(".boss-hp");
                 bossHpElement.textContent = `HP: ${maxBossHits - boss.hits}`;
-
+    
                 // Reset the hit status for the next collision check
                 boss.isHit = false;
             }
         });
     }
+    
+    function handleCollisionWithBoss(boss) {
+        if (!boss.isHit && !isPlayerBlocking) {
+            // Decrease player health by 2 when colliding with a boss
+            playerHealth -= 2;
+    
+            // Check if player has run out of health
+            if (playerHealth <= 0) {
+                // Game over 
+                console.log("Game Over!");
+                resetGame(); 
+            }
+    
+            // Mark the boss as hit to prevent continuous damage
+            boss.isHit = true;
+    
+            // Log the type of attack based on the enemy class
+            console.log("Player collided with the boss! HP -2");
+            collisionSound.play();
+    
+            // Update player HP in the UI
+            updatePlayerInfo();
+        }
+    }
+    
 
     function createEnemy() {
         const enemy = document.createElement("div");
@@ -183,6 +257,8 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
+
+
     function handleCollision(enemy) {
         if (!enemy.isHit && !isPlayerBlocking) {
             // Only decrease player health if the enemy successfully collides and player is not blocking
@@ -204,6 +280,8 @@ document.addEventListener("DOMContentLoaded", function () {
             } else {
                 console.log("Enemy attacked!");
             }
+            collisionSound.play();
+
         }
     }
     
@@ -316,6 +394,23 @@ document.addEventListener("DOMContentLoaded", function () {
                     enemy.hits = (enemy.hits || 0) + 1;
                     const maxHits = enemy.classList.contains("boss") ? maxBossHits : maxEnemyHits;
     
+                    // Change the boss image when hit by the player
+                    if (enemy.classList.contains("boss")) {
+                        enemy.style.backgroundImage = 'url("/media/oni/300gb0/school_work/software_classwork/unit1/Mac-N-Midnight/Mac-N-Midnight/boss_sprites/boss_hit_image.png")';
+    
+                        // Set a timeout to revert the boss image after 500ms
+                        setTimeout(() => {
+                            enemy.style.backgroundImage = 'url("/media/oni/300gb0/school_work/software_classwork/unit1/Mac-N-Midnight/Mac-N-Midnight/boss_sprites/megadoodle.png")';
+                        }, 500);
+                    } else {
+                        enemy.style.backgroundImage = 'url("/media/oni/300gb0/school_work/software_classwork/unit1/Mac-N-Midnight/Mac-N-Midnight/enemy_sprites/enemy_hit_image.png")';
+                
+                        // Set a timeout to revert the enemy image after 500ms
+                        setTimeout(() => {
+                            enemy.style.backgroundImage = 'url("/media/oni/300gb0/school_work/software_classwork/unit1/Mac-N-Midnight/Mac-N-Midnight/enemy_sprites/doodle.png")';
+                        }, 500);
+                    }
+    
                     // Check if the enemy is defeated
                     if (enemy.hits >= maxHits) {
                         const index = enemy.classList.contains("boss") ? bosses.indexOf(enemy) : enemies.indexOf(enemy);
@@ -323,7 +418,7 @@ document.addEventListener("DOMContentLoaded", function () {
                             if (enemy.classList.contains("boss")) {
                                 bosses.splice(index, 1);
                                 console.log("Defeated boss:", enemy);
-
+    
                                 displayVictoryMessage();
                             } else {
                                 enemies.splice(index, 1);
@@ -334,11 +429,15 @@ document.addEventListener("DOMContentLoaded", function () {
                             enemy.remove();
                         }
                     }
+                    attackSound.play();
                 }
             });
         }
     }
     
+    
+
+
     let isPlayerBlocking = false;
 
     const blockSpriteUrl = "/media/oni/300gb0/school_work/software_classwork/unit1/Mac-N-Midnight/Mac-N-Midnight/player_sprites/blk.png";
@@ -361,7 +460,7 @@ document.addEventListener("DOMContentLoaded", function () {
             setTimeout(() => {
                 isPlayerBlocking = false;
             }, 1200);
-        }
+        } blockSound.play();
     }
     
 

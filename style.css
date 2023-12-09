@@ -3,6 +3,33 @@ body {
   overflow: hidden;
 }
 
+#volumeControl {
+  position: fixed;
+  bottom: 8%;
+  left: 50%;
+  transform: translateX(-50%);
+  height: 20px;
+  width: 1000px;
+  margin-left: 10px;
+  margin-right: 10px;
+  background: #333
+}
+
+#playPauseButton { 
+  position: fixed;
+  bottom: 8%;
+  left: 50%;
+  transform: translateX(-865%);
+  height: 40px;
+  width: 70px;
+  margin-left: 10px;
+  margin-right: 10px;
+  background-color: rgb(28, 122, 230);
+  color: #fff;
+
+}
+
+
 #game-container {
   position: relative;
   width: 1280px;
@@ -84,6 +111,7 @@ body {
   font-size: 10px;
   color: #f00; 
 }
+
 
 #victory-message {
   display: none;

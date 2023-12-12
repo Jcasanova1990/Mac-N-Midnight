@@ -583,7 +583,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     function startGame() {
         // Redirect to titlescreen.html
-        window.location.href = 'titlescreen.html';
+        window.location.href = 'index.html';
     }
 function resetGame() {
     // Reset all game-related variables, player position, health, etc.

@@ -9,8 +9,6 @@ Avoid enemy hits space out your attacks and use your block strategically to avoi
 Mac is just a noodle trying to get home from a long day at the office but when undead noodles attack his only choice is to un-alive them to get home.
 
 *Screenshots of game
-![Alt text](![Alt text](ssgame1.png))
-![Alt text](![Alt text](ssgame2.png))
 
 *Technoligies used
 HTML, CSS, JAVASCRIPT, GITHUB, PIXABAY, PISKEL
@@ -22,7 +20,7 @@ MDN, W3 SCHOOLS, GEEKS FOR GEEKS.
 *****GETTING STARTED
 
 *Game link
-/media/oni/300gb0/school_work/software_classwork/unit1/Mac-N-Midnight/Mac-N-Midnight/titlescreen.html
+
 
 *Controls
 Movement = "Arrow Keys"

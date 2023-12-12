@@ -9,8 +9,8 @@ Avoid enemy hits space out your attacks and use your block strategically to avoi
 Mac is just a noodle trying to get home from a long day at the office but when undead noodles attack his only choice is to un-alive them to get home.
 
 *Screenshots of game
-![Screenshot 1](ssgame1.png)
-![Screenshot 2](ssgame2.png)
+![Alt text](../ssgame1.png)
+![Alt text](../ssgame2.png)
 *Technoligies used
 HTML, CSS, JAVASCRIPT, GITHUB, PIXABAY, PISKEL
 

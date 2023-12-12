@@ -46,7 +46,7 @@ body {
   width: 60px;
   height: 60px;
   background-color: #00f;
-  background-image: url("/media/oni/300gb0/school_work/software_classwork/unit1/Mac-N-Midnight/Mac-N-Midnight/player_sprites/move_neutral_sprite.png");
+  background-image: url("playersprites/moveneutralsprite.png");
 }
 
 #player-sprite {
@@ -81,7 +81,7 @@ body {
   width: 80px;
   height: 80px;
   background-color: #f00;
-  background-image: url("/media/oni/300gb0/school_work/software_classwork/unit1/Mac-N-Midnight/Mac-N-Midnight/enemy_sprites/doodle.png");
+  background-image: url("enemysprites/doodle.png");
 }
 
 .boss {
@@ -89,7 +89,7 @@ body {
   width: 120px;
   height: 120px;
   background-color: purple;
-  background-image: url("/media/oni/300gb0/school_work/software_classwork/unit1/Mac-N-Midnight/Mac-N-Midnight/boss_sprites/megadoodle.png");
+  background-image: url("bosssprites/megadoodle.png");
 }
 
 .enemy-name,

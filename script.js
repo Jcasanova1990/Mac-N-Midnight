@@ -7,7 +7,7 @@ document.addEventListener("DOMContentLoaded", function () {
     playerNameElement.textContent = playerName;
 
     // 
-    const backgroundMusic = new Audio("/music/backgroundmusic.mp3");  
+    const backgroundMusic = new Audio("music/backgroundmusic.mp3");  
     const volumeControl = document.getElementById("volumeControl");
     const attackSound = document.getElementById("attackSound");
     const blockSound = document.getElementById("blockSound");
@@ -363,7 +363,7 @@ document.addEventListener("DOMContentLoaded", function () {
             player.style.height = '120px';
     
             // Change the player's background image during the attack
-            player.style.backgroundImage = 'url("/playersprites/playerneutralatk.png")';
+            player.style.backgroundImage = 'url("playersprites/playerneutralatk.png")';
     
             // Add the attack animation class to the player element
             player.classList.add("attack-animation");
@@ -373,7 +373,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 isPlayerAttacking = false;
                 player.style.width = '60px';
                 player.style.height = '60px';
-                player.style.backgroundImage = 'url("/playersprites/moveneutralsprite.png")';
+                player.style.backgroundImage = 'url("playersprites/moveneutralsprite.png")';
                 player.classList.remove("attack-animation");
             }, 200);
     
@@ -396,18 +396,18 @@ document.addEventListener("DOMContentLoaded", function () {
     
                     // Change the boss image when hit by the player
                     if (enemy.classList.contains("boss")) {
-                        enemy.style.backgroundImage = 'url("/bosssprites/bosshitimage.png")';
+                        enemy.style.backgroundImage = 'url("bosssprites/bosshitimage.png")';
     
                         // Set a timeout to revert the boss image after 500ms
                         setTimeout(() => {
-                            enemy.style.backgroundImage = 'url("/bosssprites/megadoodle.png")';
+                            enemy.style.backgroundImage = 'url("bosssprites/megadoodle.png")';
                         }, 500);
                     } else {
-                        enemy.style.backgroundImage = 'url("/enemysprites/enemyhitimage.png")';
+                        enemy.style.backgroundImage = 'url("enemysprites/enemyhitimage.png")';
                 
                         // Set a timeout to revert the enemy image after 500ms
                         setTimeout(() => {
-                            enemy.style.backgroundImage = 'url("/enemysprites/doodle.png")';
+                            enemy.style.backgroundImage = 'url("enemysprites/doodle.png")';
                         }, 500);
                     }
     
@@ -440,7 +440,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     let isPlayerBlocking = false;
 
-    const blockSpriteUrl = "/playersprites/blk.png";
+    const blockSpriteUrl = "playersprites/blk.png";
 
     function block() {
         if (!isPlayerBlocking) {

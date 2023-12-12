@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mac N' Midnight</title>
+    <link rel="stylesheet" href="style.css"/>
+    <link href="map.png">
+    <link href="player_sprites/player_neutral_atk.png">
+    <link href="player_sprites/blk.png">
+    <link href="player_sprites/move_neutral_sprite.png">
+    <link href="player_sprites/dead.png">
+    <link href="enemy_sprites/doodle.png">
+    <link href="enemy_sprites/enemy_hit_image.png">
+    <link href="boss_sprites/megadoodle.png">
+    <link href="boss_sprites/boss_hit_image.png">
+    <script src="script.js" defer></script>
+</head>
+<body>
+    <div></div>
+    <input type="range" id="volumeControl" min="0" max="3.0" step="0.1" value="0.5">
+    <button id="playPauseButton">Play</button>
+<audio id="attackSound" src="/media/oni/300gb0/school_work/software_classwork/unit1/Mac-N-Midnight/Mac-N-Midnight/sounds/player_attack_sound.mp3"></audio>
+<audio id="blockSound" src="/media/oni/300gb0/school_work/software_classwork/unit1/Mac-N-Midnight/Mac-N-Midnight/sounds/player_block_sound.mp3"></audio>
+<audio id="collisionSound" src="/media/oni/300gb0/school_work/software_classwork/unit1/Mac-N-Midnight/Mac-N-Midnight/sounds/enemy_collision_sound.mp3"></audio>
+    <div id="game-container">
+        <div id="player"></div>
+        <div id="player-info">
+            <span id="player-name">Player Name</span>
+            <span id="player-hp">HP: 15</span>
+            <div id="victory-message" style="display: none;"></div>
+        </div>
+    </div>
+</body>
+</html>
